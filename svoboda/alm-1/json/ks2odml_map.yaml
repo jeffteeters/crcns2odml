@@ -1,14 +1,18 @@
 # map between structures in Svoboda lab format and odML
+'odml_sections':
+  - 'path': 'session'
+    'type': 'session'
+    'definition': 'session-invarient metadata'
+  - 'path': 'session/ephys'
+    'type': 'ephsys setup'
+    'definition': 'ephys session-invarient metadata'
 
-'animalGeneCopy':
-  'json_path': 'animalGeneCopy'
-  'odml_path': 'session/animalGeneCopy'
-  'odml_info':
-    "definition": '0, 1 or 2; 0: homozygous ko; 1: het transgene; 2: homo transgene'
-
-'animalGeneModification':
-  'json_path': 'animalGeneModification'
-  'odml_path': 'session/animalGeneModification'
-  'odml_info':
-    "definition": 'Examples: PV-ires-Cre, rosa-Cag-lsl-ChR2-YFP, sim1-cre; describe genomic modification'
-
+'odml_properties':
+  - 'json_path': 'animalGeneCopy'
+    'odml_path': 'session/animalGeneCopy'
+    'odml_info':
+      "definition": '0, 1 or 2; 0: homozygous ko; 1: het transgene; 2: homo transgene'
+  - 'json_path': 'animalGeneModification'
+    'odml_path': 'session/ephys/animalGeneModification'
+    'odml_info':
+      "definition": 'Examples: PV-ires-Cre, rosa-Cag-lsl-ChR2-YFP, sim1-cre; describe genomic modification'

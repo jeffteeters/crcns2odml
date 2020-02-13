@@ -45,9 +45,34 @@ def get_parent_section(root, property_path):
 				break
 		if not section_found:
 			# must create a new section
-			section = odml.Section(name=wanted_name,
-						parent=section)
+			print("Cound not find parent section for property: %s" % property_path)
+			sys.exit("aborting")
+			# section = odml.Section(name=wanted_name,
+			# 			parent=section)
 	return section
+
+def create_odml_section(root, path, stype, definition):
+	# create odML section
+	# root is the odML root object
+	path_parts = path.split('/')
+	section = root
+	section_found = True
+	for i in range(len(path_parts) - 1):
+		child_sections = section.sections
+		wanted_name = path_parts[i]
+		section_found = False
+		for cs in child_sections:
+			if cs.name == wanted_name:
+				# found desired section
+				section = cs
+				section_found = True
+				break
+	if not section_found:
+		print("Unable to find parent odML section for section %s" % path)
+		sys.exit("aborting")
+		# create a new section
+	section = odml.Section(name=path_parts[-1], type=stype, definition=definition, 
+						parent=section)
 
 
 def save_property(section, name, values, odml_info):
@@ -75,15 +100,14 @@ def get_json_value(ksjson, json_path):
 	return value
 
 
-def generate_odml(json_name, ymap):
+def add_odml_properties(root, json_name, ymap):
 	ksjson = load_ksjson(json_name)
-	root = make_odml_root()
-	for key in ymap:
-		info = ymap[key]
+	property_info = ymap['odml_properties']
+	for info in property_info:
 		json_path = info["json_path"]
 		odml_path = info["odml_path"]
 		odml_info = info["odml_info"]
-		print("\nkey=%s" % key)
+		print("\nadd property--")
 		print("json_path=%s" % json_path)
 		print("odml_path=%s" % odml_path)
 		print("odml_info=%s" % odml_info)
@@ -103,6 +127,12 @@ def load_ksjson(json_name):
 	ksjson = json.loads(contents)
 	return ksjson
 
+def create_odml_sections(root, ymap):
+	# create the sections specified by the 'odML_sections' key
+	sections_info = ymap['odml_sections']
+	for si in sections_info:
+		create_odml_section(root, si["path"], si["type"], si["definition"])
+
 
 def load_yaml():
 	global map_file
@@ -115,7 +145,9 @@ def load_yaml():
 def main():
 	global json_name
 	ymap = load_yaml()
-	generate_odml(json_name, ymap)
+	root = make_odml_root()
+	create_odml_sections(root, ymap)
+	add_odml_properties(root, json_name, ymap)
 
 if __name__ == "__main__":
 	main()
