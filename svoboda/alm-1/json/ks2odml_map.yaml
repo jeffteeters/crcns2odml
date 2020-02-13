@@ -1,0 +1,14 @@
+# map between structures in Svoboda lab format and odML
+
+'animalGeneCopy':
+  'json_path': 'animalGeneCopy'
+  'odml_path': 'session/animalGeneCopy'
+  'odml_info':
+    "definition": '0, 1 or 2; 0: homozygous ko; 1: het transgene; 2: homo transgene'
+
+'animalGeneModification':
+  'json_path': 'animalGeneModification'
+  'odml_path': 'session/animalGeneModification'
+  'odml_info':
+    "definition": 'Examples: PV-ires-Cre, rosa-Cag-lsl-ChR2-YFP, sim1-cre; describe genomic modification'
+
