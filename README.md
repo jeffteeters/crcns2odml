@@ -1,6 +1,6 @@
 # crcns2odml
 
-This repository contains tools to convert some metadata for data sets stored in CRCNS.org
+This repository contains tools to convert metadata for data sets stored in CRCNS.org
 to the odML format.  The tools include:
 
 * convertSvobda2json.m
