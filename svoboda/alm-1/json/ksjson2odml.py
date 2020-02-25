@@ -80,10 +80,26 @@ def save_property(section, name, values, odml_info):
 	# odml_info is dictionary with keys:
 	#  definition - definition
 	definition = odml_info['definition']
-	prop = odml.Property(name=name,
+	if 'dtype' in odml_info:
+		dtype = odml_info["dtype"]
+		if dtype[-6:] == "-tuple":
+			# must convert values to form like: ["(1; 2)", "(3; 4)"]
+			values = [ '(' + '; '.join(["%g" % x for x in v]) + ')'  for v in values]
+	else:
+		dtype = None
+	try:
+		prop = odml.Property(name=name,
 						  definition=definition,
-						  values=values)
-	section.append(prop)
+						  values=values,
+						  dtype = dtype)
+	except ValueError as e:
+		print("unable to create property '%s'" % name)
+		print("values=")
+		pp.pprint(values)
+		print("odML info=")
+		pp.pprint(odml_info)
+	else:
+		section.append(prop)
 
 
 def get_json_value(ksjson, json_path):
@@ -94,9 +110,10 @@ def get_json_value(ksjson, json_path):
 		obj = obj[path_parts[i]]
 	key = path_parts[-1]
 	if key not in obj:
-		print("path %s not found in json" % json_path)
-		import pdb; pdb.set_trace()
-	value = obj[key]
+		# print("path %s not found in json" % json_path)
+		value = None
+	else:
+		value = obj[key]
 	return value
 
 
@@ -107,11 +124,15 @@ def add_odml_properties(root, json_name, ymap):
 		json_path = info["json_path"]
 		odml_path = info["odml_path"]
 		odml_info = info["odml_info"]
-		print("\nadd property--")
-		print("json_path=%s" % json_path)
-		print("odml_path=%s" % odml_path)
-		print("odml_info=%s" % odml_info)
+		# print("\nadd property--")
+		# print("json_path=%s" % json_path)
+		# print("odml_path=%s" % odml_path)
+		# print("odml_info=%s" % odml_info)
 		value = get_json_value(ksjson, json_path)
+		if value is None:
+			# could not find this value in the json file, display a warning
+			print("Warning: Could not find '%s' in JSON file.  Not including it in odML" % json_path)
+			continue
 		property_path = odml_path.split('/')
 		section = get_parent_section(root, property_path)
 		property_name = property_path[-1]

@@ -1,18 +1,298 @@
 # map between structures in Svoboda lab format and odML
 'odml_sections':
-  - 'path': 'session'
-    'type': 'session'
-    'definition': 'session-invarient metadata'
-  - 'path': 'session/ephys'
-    'type': 'ephsys setup'
-    'definition': 'ephys session-invarient metadata'
+
+  - 'path': 'Experiment'
+    'type': 'Experiment'
+    'definition': 'Metadata about the experiment session'
+
+  - 'path': 'Surgerical_procedures'
+    'type': 'Surgerical procedures'
+    'definition': 'Procedures used for the surgery'
+
+  - 'path': 'Surgerical_procedures/Virus'
+    'type': 'virus'
+    'definition': 'viral injection metadata'
+
+  - 'path': 'Extracellular'
+    'type': 'Extracellular recordings'
+    'definition': 'Extracellular recordings metadata'
+
+  - 'path': 'Photostim'
+    'type': 'Photostim'
+    'definition': 'Photostimulation metadata'
+
+  - 'path': 'Behavior'
+    'type': 'Behavior'
+    'definition': 'Behavior metadata'
+
+
 
 'odml_properties':
+
+  - 'json_path': 'species'
+    'odml_path': 'Experiment/species'
+    'odml_info':
+      "definition": 'Species.  Examples: Mus musculus, Rattus norvegicus'
+
+  - 'json_path': 'animalStrain'
+    'odml_path': 'Experiment/animalStrain'
+    'odml_info':
+      "definition": 'One of: 012569, kj18, JAX stock number, GENSAT ID, other'
+
   - 'json_path': 'animalGeneCopy'
-    'odml_path': 'session/animalGeneCopy'
+    'odml_path': 'Experiment/animalGeneCopy'
     'odml_info':
       "definition": '0, 1 or 2; 0: homozygous ko; 1: het transgene; 2: homo transgene'
+
   - 'json_path': 'animalGeneModification'
-    'odml_path': 'session/ephys/animalGeneModification'
+    'odml_path': 'Experiment/animalGeneModification'
     'odml_info':
       "definition": 'Examples: PV-ires-Cre, rosa-Cag-lsl-ChR2-YFP, sim1-cre; describe genomic modification'
+
+  - 'json_path': 'animalSource'
+    'odml_path': 'Experiment/animalSource'
+    'odml_info':
+      "definition": 'Examples: JAX, GENSAT, investigator name; or other source of the animal'
+
+  - 'json_path': 'animalGeneticBackground'
+    'odml_path': 'Experiment/animalGeneticBackground'
+    'odml_info':
+      "definition": 'Example: unidentified; describe breeding history'
+
+  - 'json_path': 'animalID'
+    'odml_path': 'Experiment/animalID'
+    'odml_info':
+      "definition": 'Example: anm0032456; unique animal identifier'
+
+  - 'json_path': 'sex'
+    'odml_path': 'Experiment/sex'
+    'odml_info':
+      "definition": 'sex of mouse (m,f)'
+
+  - 'json_path': 'dateOfBirth'
+    'odml_path': 'Experiment/dateOfBirth'
+    'odml_info':
+      "definition": 'Format: yyyymmdd (international standard notation)'
+
+  - 'json_path': 'dateOfExperiment'
+    'odml_path': 'Experiment/dateOfExperiment'
+    'odml_info':
+      "definition": 'Format: yyyymmdd (international standard notation)'
+
+  - 'json_path': 'timeOfExperiment'
+    'odml_path': 'Experiment/timeOfExperiment'
+    'odml_info':
+      "definition": 'Format: hhmmss (international standard notation)'
+
+  - 'json_path': 'experimenters'
+    'odml_path': 'Experiment/experimenters'
+    'odml_info':
+      "definition": 'names of experimenters'
+
+  - 'json_path': 'citation'
+    'odml_path': 'Experiment/citation'
+    'odml_info':
+      "definition": 'PMID'
+
+  - 'json_path': 'whiskerConfig'
+    'odml_path': 'Experiment/whiskerConfig'
+    'odml_info':
+      "definition": 'Description of the state of the whiskers during the experiment.  Examples: full/ C row/ C2'
+
+  - 'json_path': 'weightBefore'
+    'odml_path': 'Experiment/weightBefore'
+    'odml_info':
+      "definition": "Weight of subject at the beginning of the experiment, in grams; Example: 20"
+
+  - 'json_path': 'weightAfter'
+    'odml_path': 'Experiment/'
+    'odml_info':
+      "definition": "Weight of subject at the end of the experiment, in grams; Example: 21"
+
+  - 'json_path': 'experimentType'
+    'odml_path': 'Experiment/experimentType'
+    'odml_info':
+      "definition": >-
+        Specifies the types of experiments, not exclusive; see detailed decription below.
+        Is one of: behavior/extracellular/wholeCell/calciumImaging/photostim.
+
+  - 'json_path': 'referenceAtlas'
+    'odml_path': 'Experiment/'
+    'odml_info':
+      "definition": 'Specifies reference atlast for anatomical locations; Example: Allen Reference Atlas'
+
+  - 'json_path': 'surgicalManipulation'
+    'odml_path': 'Surgerical_procedures/surgicalManipulation'
+    'odml_info':
+      "definition": >-
+        Specifies the types of surgical manipulations.  Not exclusive.
+        Examples: Virus injection/fiber implant/window implant/drug injection/electroporation
+
+  - 'json_path': 'virus/virusSource'
+    'odml_path': 'Surgerical_procedures/Virus/virusSource'
+    'odml_info':
+      "definition": 'Source of virus.  Examples: Upenn, Janelia core, investigator, other'
+
+  - 'json_path': 'virus/virusID'
+    'odml_path': 'Surgerical_procedures/Virus/virusID'
+    'odml_info':
+      "definition": 'Upenn designation; or addgene; Example: AV-9-PV2833'
+
+  - 'json_path': 'virus/virusLotNumber'
+    'odml_path': 'Surgerical_procedures/Virus/virusLotNumber'
+    'odml_info':
+      "definition": 'virus lot number'
+
+  - 'json_path': 'virus/virusDateMade'
+    'odml_path': 'Surgerical_procedures/Virus/virusDateMade'
+    'odml_info':
+      "definition": 'Date virus made.  Format: yyyymmdd,'
+
+  - 'json_path': 'virus/infectionCoordinates'
+    'odml_path': 'Surgerical_procedures/Virus/infectionCoordinates'
+    'odml_info':
+      "definition": >-
+        Locations of infection if based on histology or injection (ml, ap, depth) relative to bregma;
+        in millimeters; if multiple injection sites give list of (x,y,z) coordinates.
+
+
+  - 'json_path': 'virus/infectionLocation'
+    'odml_path': 'Surgerical_procedures/Virus/infectionLocation'
+    'odml_info':
+      "definition": 'location of infection according to atlas.  Examples: vS1 C2 barrel'
+
+  - 'json_path': 'virus/virusTiter'
+    'odml_path': 'Surgerical_procedures/Virus/virusTiter'
+    'odml_info':
+      "definition": 'nominal titer'
+
+  - 'json_path': 'virus/injectionVolume'
+    'odml_path': 'Surgerical_procedures/Virus/injectionVolume'
+    'odml_info':
+      "definition": 'injection volume, in nL; Examples: 50, 50'
+
+  - 'json_path': 'virus/injectionDate'
+    'odml_path': 'Surgerical_procedures/Virus/injectionDate'
+    'odml_info':
+      "definition": 'Format: yyyymmdd'
+
+  - 'json_path': 'extracellular/recordingCoordinates'
+    'odml_path': 'Extracellular/recordingCoordinates'
+    'odml_info':
+      "definition": >-
+        Location of probe 1 (ml, ap, depth) relative to bregma; in millimeters.
+        This is the center of the tips; for example, the location in a 4-shank electrode will
+        be specified as a point along the tips, but between the two center shanks.
+        Example: P: 1.5; Lat: 3.5; depth
+
+  - 'json_path': 'extracellular/recordingLocation'
+    'odml_path': 'Extracellular/recordingLocation'
+    'odml_info':
+      "definition": "location according to reference atlas or anatomy or ISI; Example: vS1, C2, Paxinos or ISI"
+
+  - 'json_path': 'extracellular/recordingMarker'
+    'odml_path': 'Extracellular/recordingMarker'
+    'odml_info':
+      "definition": "Examples: DiI, lesion, stereotaxic, ISI"
+
+  - 'json_path': 'extracellular/recordingType'
+    'odml_path': 'Extracellular/recordingType'
+    'odml_info':
+      "definition": "One of: chronic, accute"
+
+  - 'json_path': 'extracellular/penetrationN'
+    'odml_path': 'Extracellular/penetrationN'
+    'odml_info':
+      "definition": "The nth time to access the tissue.  Example: 1"
+
+  - 'json_path': 'extracellular/probeSource'
+    'odml_path': 'Extracellular/probeSource'
+    'odml_info':
+      "definition": "Examples: neuronexus, apig"
+
+  - 'json_path': 'extracellular/probeType'
+    'odml_path': 'Extracellular/probeType'
+    'odml_info':
+      "definition": "NN part#/ tetrode / Janelia ref"
+
+  - 'json_path': 'extracellular/groundCoordinates'
+    'odml_path': 'Extracellular/groundCoordinates'
+    'odml_info':
+      "definition": "(ml, ap, depth) relative to bregma; in millimeters"
+
+  - 'json_path': 'extracellular/referenceCoordinates'
+    'odml_path': 'Extracellular/referenceCoordinates'
+    'odml_info':
+      "definition": "(ml, ap, depth) relative to bregma; in millimeters"
+
+  - 'json_path': 'extracellular/siteLocations'
+    'odml_path': 'Extracellular/siteLocations'
+    'odml_info':
+      "definition": "array of locations, one per site (ml, ap, depth); in micrometers"
+      "dtype": "3-tuple"
+
+  - 'json_path': 'extracellular/extracellularDataType'
+    'odml_path': 'Extracellular/extracellularDataType'
+    'odml_info':
+      "definition": "Either: sorted spike times, spike waveform snipets, spike band voltage traces, local field potential"
+
+  - 'json_path': 'extracellular/cellType'
+    'odml_path': 'Extracellular/cellType'
+    'odml_info':
+      "definition": "Array of cell types; Example: pyramidal, PT neuron"
+
+  - 'json_path': 'extracellular/identificationMethod'
+    'odml_path': 'Extracellular/identificationMethod'
+    'odml_info':
+      "definition": "Example: waveform shape, ChR tagging"
+
+  - 'json_path': 'extracellular/amplifierRolloff'
+    'odml_path': 'Extracellular/amplifierRolloff'
+    'odml_info':
+      "definition": "rolloff frequency of the recording system, kHz"
+
+  - 'json_path': 'extracellular/spikeSorting'
+    'odml_path': 'Extracellular/spikeSorting'
+    'odml_info':
+      "definition": "algorithm or manual; for algorithm, provide citation of the original method paper"
+
+  - 'json_path': 'extracellular/ADunit'
+    'odml_path': 'Extracellular/ADunit'
+    'odml_info':
+      "definition": "Describe the AD unit; example: '14 bits'"
+
+  - 'json_path': 'photostim/photostimWavelength'
+    'odml_path': 'Photostim/photostimWavelength'
+    'odml_info':
+      "definition": "photostimulation wavelength in nanometers"
+
+  - 'json_path': 'photostim/stimulationMethod'
+    'odml_path': 'Photostim/stimulationMethod'
+    'odml_info':
+      "definition": >-
+        specifies the types of photostimulation experiment, not exclusive.  Examples: 
+        clear skull, craniotomy, glass window, optica fiber, 2P excitation
+
+  - 'json_path': 'photostim/photostimCoordinates'
+    'odml_path': 'Photostim/photostimCoordinates'
+    'odml_info':
+      "dtype": "3-tuple"
+      "definition": >-
+        x,y,z; laser focal location  or fiber tip location; (ml, ap, depth) relative to bregma; in millimeters
+
+
+  - 'json_path': 'photostim/photostimLocation'
+    'odml_path': 'Photostim/photostimLocation'
+    'odml_info':
+      "definition": "Example: ALM"
+
+  - 'json_path': 'photostim/identificationMethod'
+    'odml_path': 'Photostim/identificationMethod'
+    'odml_info':
+      "definition": "Example: histology"
+
+  - 'json_path': 'behavior/task_keyword'
+    'odml_path': 'Behavior/task_keyword'
+    'odml_info':
+      "definition": >-
+        One of: detection, discrimination, go nogo, lick Left lick Right, delay, somatosensory, motor, response, reward
