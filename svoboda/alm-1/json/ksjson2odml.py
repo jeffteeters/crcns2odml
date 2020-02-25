@@ -5,8 +5,6 @@ import sys
 import yaml
 import json
 
-
-
 import pprint
 pp = pprint.PrettyPrinter(indent=4)
 
@@ -15,10 +13,9 @@ pp = pprint.PrettyPrinter(indent=4)
 # script to convert json made from Svoboda lab Mat files to odML.
 # uses map file "ks2odml_map.yaml" to specify map beteeen json and odml
 
-map_file = "ks2odml_map.yaml"
+default_map_file = "ks2odml_map.yaml"
 # json_name = "data_structure_ANM221977_20140115.json"
-json_name = "meta_data_ANM221977_20140115.json"
-# test_file = "test_yaml_file.yaml"
+default_input_file = "meta_data_ANM221977_20140115.json"
 
 def make_odml_root():
 	root = odml.Document(author='Jeff Teeters',
@@ -117,7 +114,7 @@ def get_json_value(ksjson, json_path):
 	return value
 
 
-def add_odml_properties(root, json_name, ymap):
+def add_odml_properties(root, json_name, ymap, output_directory):
 	ksjson = load_ksjson(json_name)
 	property_info = ymap['odml_properties']
 	for info in property_info:
@@ -138,7 +135,11 @@ def add_odml_properties(root, json_name, ymap):
 		property_name = property_path[-1]
 		save_property(section, property_name, value, odml_info)
 	base_name = json_name[0:-5]
-	odml.save(root, base_name, "xml")
+	if(output_directory is not None):
+		output_path = os.path.join(output_directory, base_name)
+	else:
+		output_path = base_name
+	odml.save(root, output_path, "xml")
 
 
 def load_ksjson(json_name):
@@ -155,20 +156,61 @@ def create_odml_sections(root, ymap):
 		create_odml_section(root, si["path"], si["type"], si["definition"])
 
 
-def load_yaml():
-	global map_file
+def load_yaml(map_file):
 	with open(map_file, 'r') as stream:
 		ymap = yaml.safe_load(stream)
-	print("loaded map is:")
-	pp.pprint(ymap)
+	# print("loaded map is:")
+	# pp.pprint(ymap)
 	return ymap
 
+def display_instructions():
+	print("Usage:")
+	print("%s <input_file> <map_file> [ <output_directory> ]" % sys.argv[0])
+	print("Where:")
+	print("<input_file> - json file containing metadata, or '-' for default file.")
+	print("<map_file> - yaml file specifying map of data from json to odML, or '-' for default file.")
+	print("<output_directory> - directory to store generated odML file.  Default is")
+	print("    current directory.  File name will basename of <input_file> with extension '.xml'.")
+
+def process_command_arguments():
+	# return list of <input_file>, <map_file>, <output_directory>
+	global default_input_file, default_map_file
+	if(len(sys.argv) < 3 or len(sys.argv) > 4):
+		display_instructions()
+		sys.exit()
+	input_file = sys.argv[1]
+	if(input_file == '-'):
+		input_file = default_input_file
+		print("Using default input file: %s" % default_input_file)
+	if not os.path.isfile(input_file):
+		print("Input file %s not found." % input_file)
+		sys.exit("Aborting")
+	if not input_file.endswith(".json"):
+		print("Input file '%s' must have extension .json" % input_file)
+		sys.exit("Aborting.")
+	map_file = sys.argv[2]
+	if map_file == '-':
+		map_file = default_map_file
+		print("Using default map file: %s" % default_map_file)
+	if not os.path.isfile(map_file):
+		print("Map file %s not found." % map_file)
+		sys.exit("Aborting.")
+	if len(sys.argv) == 4:
+		output_directory = sys.argv[3]
+		if not os.path.isdir(output_directory):
+			print("Output directory '%s' not found" % output_directory)
+			sys.exit("Aborting.")
+	else:
+		output_directory = None  # use current directory
+	return(input_file, map_file, output_directory)
+
+
 def main():
-	global json_name
-	ymap = load_yaml()
+	input_file, map_file, output_directory = process_command_arguments()
+	ymap = load_yaml(map_file)
 	root = make_odml_root()
 	create_odml_sections(root, ymap)
-	add_odml_properties(root, json_name, ymap)
+	add_odml_properties(root, input_file, ymap, output_directory)
 
 if __name__ == "__main__":
 	main()
